@@ -1,0 +1,16 @@
+{
+  "name": "venkanode",
+  "version": "1.0.0",
+  "description": "A NodeJS app to syncronize Venka App with SoftRestaurant database",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Victor H. Olvera",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.26.1",
+    "mssql": "^8.1.0",
+    "xml2js": "^0.4.23"
+  }
+}
