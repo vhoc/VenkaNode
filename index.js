@@ -10,9 +10,9 @@ const main = async () => {
 	 * from executing the queries in the local database.
 	 * @param {*} data 
 	 */
-	const log = async data => {
+	const log = async ( data, file ) => {
 		let dataString = JSON.stringify( data, null, 4 )
-		fs.writeFile( './last_output.log', dataString, (error, result) => {
+		fs.writeFile( file, dataString, (error, result) => {
 			if ( error ) console.error( error )
 			console.log( result )
 			console.log( 'Datos escritos con éxito.' )
@@ -24,7 +24,21 @@ const main = async () => {
 	 * @param {*} data 
 	 */
 	const sendData = async data => {
-
+		try {
+			const response = await axios.put( 'https://venka.app/api/datalive/', data, {
+				headers: {
+					'Accept': 'application/json',
+					'Content-Type': 'text/json',
+					'Authorization': 'Bearer 5|rWPvximC35rCs3UYTvadmJkI9Mz7S1spRgqyDFid'
+				}
+			} )
+			await log( response.data, './last_response.log' )
+			console.log( response.data )
+		} catch ( error ) {
+			console.error( error )
+			process.exit()
+		}
+		
 	}
 
 	/**
@@ -73,7 +87,8 @@ const main = async () => {
 		}
 
 		console.log( 'Consultas ejecutadas, escribiendo datos...' )
-		return data
+		let addedSucursal = [ { id_sucursal: 40 }, ...data ]
+		return addedSucursal
 	}
 
 	
@@ -90,7 +105,8 @@ const main = async () => {
 
 		const obtainedQueries = await response
 		const queriesResponse = await queryLocal( obtainedQueries )
-		await log( queriesResponse )
+		await log( queriesResponse, './last_output.log' )
+		await sendData( queriesResponse )
 		//await log( queryLocal( await response ) )
 		//await log( responseData )
 		
